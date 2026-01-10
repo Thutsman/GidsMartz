@@ -1,0 +1,165 @@
+'use client';
+
+import { useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn, formatPrice } from '@/lib/utils';
+import { getFeaturedProducts } from '@/data/products';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+
+export function FeaturedProducts() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const products = getFeaturedProducts();
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ triggerOnce: true });
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <section className="py-12 sm:py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        {/* Section Header */}
+        <div 
+          ref={headerRef}
+          className={cn(
+            'flex flex-col md:flex-row md:items-end md:justify-between mb-8 sm:mb-10',
+            'scroll-fade-in',
+            headerVisible && 'visible'
+          )}
+        >
+          <div>
+            <span className="text-[#DC2626] font-semibold text-xs sm:text-sm uppercase tracking-wider">
+              Top Picks
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E3A8A] mt-2">
+              Featured Products
+            </h2>
+          </div>
+
+          {/* Navigation Arrows (Desktop) */}
+          <div className="hidden md:flex items-center gap-2 mt-4 md:mt-0">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('left')}
+              className="border-gray-300"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('right')}
+              className="border-gray-300"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Products Carousel */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 sm:-mx-6 px-4 sm:px-6"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/products/${product.categorySlug}/${product.id}`}
+              className="flex-shrink-0 w-[260px] sm:w-[280px] snap-start group"
+            >
+              <div className={cn(
+                'bg-white rounded-lg sm:rounded-xl overflow-hidden',
+                'border border-gray-100',
+                'shadow-sm hover:shadow-lg',
+                'transition-all duration-300'
+              )}>
+                {/* Image Container */}
+                <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) 260px, 280px"
+                  />
+
+                  {/* Brand Badge */}
+                  <Badge
+                    className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-[#1E3A8A] hover:bg-[#1E3A8A] text-xs"
+                  >
+                    {product.brand}
+                  </Badge>
+
+                  {/* Stock Badge */}
+                  <Badge
+                    className={cn(
+                      'absolute top-2 sm:top-3 right-2 sm:right-3 text-xs',
+                      product.inStock
+                        ? 'bg-green-500 hover:bg-green-500'
+                        : 'bg-orange-500 hover:bg-orange-500'
+                    )}
+                  >
+                    {product.inStock ? 'In Stock' : 'Order'}
+                  </Badge>
+                </div>
+
+                {/* Content */}
+                <div className="p-3 sm:p-4">
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#1E3A8A] transition-colors line-clamp-2 min-h-[40px] sm:min-h-[48px]">
+                    {product.name}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-1">
+                    {product.category}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-3 sm:mt-4">
+                    <span className="text-lg sm:text-xl font-bold text-[#1E3A8A]">
+                      {formatPrice(product.price, product.currency)}
+                    </span>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[#DC2626] hover:text-[#B91C1C] hover:bg-red-50 p-0 text-xs sm:text-sm"
+                    >
+                      View
+                      <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* View All Link */}
+        <div className="text-center mt-8 sm:mt-10">
+          <Link href="/products">
+            <Button
+              size="lg"
+              className="bg-[#1E3A8A] hover:bg-[#172554] text-white text-sm sm:text-base px-6 sm:px-8"
+            >
+              View All Products
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default FeaturedProducts;

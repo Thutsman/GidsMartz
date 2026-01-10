@@ -1,0 +1,9 @@
+export { HeroSlider } from './HeroSlider';
+export { TrustBadges } from './TrustBadges';
+export { FeaturedCategories } from './FeaturedCategories';
+export { FeaturedProducts } from './FeaturedProducts';
+export { DiasporaSection } from './DiasporaSection';
+export { WhyChooseUs } from './WhyChooseUs';
+export { BrandsWeCarry } from './BrandsWeCarry';
+export { Testimonials } from './Testimonials';
+export { CTASection } from './CTASection';

@@ -169,6 +169,9 @@
   .bg-gids-blue {
     background-color: var(--color-gids-blue);
   }
+  .bg-gids-blue-dark {
+    background-color: var(--color-gids-blue-dark);
+  }
   .bg-gids-red {
     background-color: var(--color-gids-red);
   }
@@ -180,6 +183,9 @@
   }
   .border-gids-red {
     border-color: var(--color-gids-red);
+  }
+  .hover\:bg-gids-blue-dark:hover {
+    background-color: var(--color-gids-blue-dark);
   }
 
   /* Scroll Animation Classes */
@@ -245,5 +251,21 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Infinite scroll animation for brands */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+  .animate-scroll:hover {
+    animation-play-state: paused;
   }
 }

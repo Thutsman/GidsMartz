@@ -1,19 +1,57 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn, formatPrice } from '@/lib/utils';
-import { getFeaturedProducts } from '@/data/products';
+import { Product } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export function FeaturedProducts() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const products = getFeaturedProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ triggerOnce: true });
+
+  useEffect(() => {
+    async function fetchFeaturedProducts() {
+      try {
+        const response = await fetch('/api/products?featured=true&inStock=true&limit=20');
+        const data = await response.json();
+        
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else if (data.error) {
+          // If API returns an error, fallback to static data
+          console.warn('API error, using fallback data:', data.error);
+          const { getFeaturedProducts } = await import('@/data/products');
+          setProducts(getFeaturedProducts());
+        } else {
+          // Unknown response format, use empty array
+          console.warn('Unexpected API response format:', data);
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+        // Fallback to static data on network error
+        try {
+          const { getFeaturedProducts } = await import('@/data/products');
+          setProducts(getFeaturedProducts());
+        } catch (importError) {
+          // If import fails, use empty array
+          setProducts([]);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFeaturedProducts();
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -68,12 +106,29 @@ export function FeaturedProducts() {
         </div>
 
         {/* Products Carousel */}
-        <div
-          ref={scrollRef}
-          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 sm:-mx-6 px-4 sm:px-6"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {products.map((product) => (
+        {loading ? (
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mx-4 sm:-mx-6 px-4 sm:px-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-[260px] sm:w-[280px] bg-gray-100 rounded-lg animate-pulse">
+                <div className="aspect-square bg-gray-200 rounded-t-lg"></div>
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No featured products available</p>
+          </div>
+        ) : (
+          <div
+            ref={scrollRef}
+            className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 sm:-mx-6 px-4 sm:px-6"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {products.map((product) => (
             <Link
               key={product.id}
               href={`/products/${product.categorySlug}/${product.id}`}
@@ -142,8 +197,9 @@ export function FeaturedProducts() {
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* View All Link */}
         <div className="text-center mt-8 sm:mt-10">

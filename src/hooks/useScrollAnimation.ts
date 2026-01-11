@@ -73,8 +73,10 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     };
   }, [threshold, rootMargin, triggerOnce, delay, isMounted]);
 
+  // Always return false for isVisible during SSR to prevent hydration mismatches
+  // The visible class will be added after mount on the client
   return {
     ref: elementRef,
-    isVisible: isMounted && (triggerOnce ? (hasAnimated || isVisible) : isVisible)
+    isVisible: isMounted ? (triggerOnce ? (hasAnimated || isVisible) : isVisible) : false
   };
 }

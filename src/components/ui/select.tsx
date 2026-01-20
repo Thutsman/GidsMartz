@@ -53,7 +53,8 @@ function SelectTrigger({
 function SelectContent({
   className,
   children,
-  position = "item-aligned",
+  // Popper positioning is more reliable inside Dialog/scroll containers
+  position = "popper",
   align = "center",
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
@@ -69,6 +70,7 @@ function SelectContent({
         )}
         position={position}
         align={align}
+        sideOffset={4}
         {...props}
       >
         <SelectScrollUpButton />

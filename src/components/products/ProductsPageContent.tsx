@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn, formatPrice } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Product, Category } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -21,7 +21,7 @@ export function ProductsPageContent() {
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState<'newest' | 'price-asc' | 'price-desc' | 'name-asc'>('newest');
+  const [sortBy, setSortBy] = useState<'newest' | 'name-asc'>('newest');
 
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ triggerOnce: true });
 
@@ -87,12 +87,6 @@ export function ProductsPageContent() {
 
     // Sort
     switch (sortBy) {
-      case 'price-asc':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
       case 'name-asc':
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
@@ -134,7 +128,7 @@ export function ProductsPageContent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#1E3A8A] via-[#172554] to-[#1E3A8A] py-12 sm:py-16">
+      <section className="bg-linear-to-br from-gids-blue via-gids-blue-dark to-gids-blue py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6">
           <div
             ref={headerRef}
@@ -206,8 +200,6 @@ export function ProductsPageContent() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                <SelectItem value="price-desc">Price: High to Low</SelectItem>
                 <SelectItem value="name-asc">Name: A to Z</SelectItem>
               </SelectContent>
             </Select>
@@ -284,7 +276,7 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid'
         href={`/products/${product.categorySlug}/${product.id}`}
         className="flex gap-4 bg-white rounded-lg border border-gray-200 p-4 hover:shadow-lg transition-shadow group"
       >
-        <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+        <div className="relative w-32 h-32 sm:w-40 sm:h-40 shrink-0 rounded-lg overflow-hidden bg-gray-100">
           <Image
             src={product.image}
             alt={product.name}
@@ -297,20 +289,17 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid'
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <Badge className="bg-[#1E3A8A] text-xs">{product.brand}</Badge>
+                <Badge className="bg-gids-blue text-xs">{product.brand}</Badge>
                 {product.featured && (
                   <Badge variant="outline" className="text-xs">Featured</Badge>
                 )}
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#1E3A8A] transition-colors mb-1">
+              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-gids-blue transition-colors mb-1">
                 {product.name}
               </h3>
               <p className="text-sm text-gray-500 mb-2 line-clamp-2">{product.description}</p>
               <p className="text-xs text-gray-400 mb-3">{product.category}</p>
               <div className="flex items-center justify-between">
-                <span className="text-xl font-bold text-[#1E3A8A]">
-                  {formatPrice(product.price, product.currency)}
-                </span>
                 <Badge
                   className={cn(
                     'text-xs',
@@ -342,7 +331,7 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid'
           className="object-cover group-hover:scale-105 transition-transform"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
-        <Badge className="absolute top-2 left-2 bg-[#1E3A8A] text-xs">
+        <Badge className="absolute top-2 left-2 bg-gids-blue text-xs">
           {product.brand}
         </Badge>
         <Badge
@@ -362,15 +351,10 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: 'grid'
         )}
       </div>
       <div className="p-4">
-        <h3 className="text-base font-semibold text-gray-900 group-hover:text-[#1E3A8A] transition-colors line-clamp-2 mb-1">
+        <h3 className="text-base font-semibold text-gray-900 group-hover:text-gids-blue transition-colors line-clamp-2 mb-1">
           {product.name}
         </h3>
         <p className="text-xs text-gray-500 mb-3 line-clamp-1">{product.category}</p>
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-[#1E3A8A]">
-            {formatPrice(product.price, product.currency)}
-          </span>
-        </div>
       </div>
     </Link>
   );

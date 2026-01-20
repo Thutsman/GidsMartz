@@ -1,0 +1,1 @@
+export { DiasporaPageContent } from './DiasporaPageContent';

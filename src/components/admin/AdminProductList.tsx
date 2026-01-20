@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Product } from '@/types';
 import { AdminProductForm } from './AdminProductForm';
-import { formatPrice } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
@@ -136,9 +135,6 @@ export function AdminProductList() {
                   Brand
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -152,7 +148,7 @@ export function AdminProductList() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                     No products found
                   </td>
                 </tr>
@@ -161,7 +157,7 @@ export function AdminProductList() {
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded bg-gray-100 overflow-hidden flex-shrink-0">
+                        <div className="h-12 w-12 rounded bg-gray-100 overflow-hidden shrink-0">
                           <img
                             src={product.image}
                             alt={product.name}
@@ -178,9 +174,6 @@ export function AdminProductList() {
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-600">{product.category}</td>
                     <td className="px-4 py-4 text-sm text-gray-600">{product.brand}</td>
-                    <td className="px-4 py-4 text-sm font-medium text-gray-900">
-                      {formatPrice(product.price, product.currency)}
-                    </td>
                     <td className="px-4 py-4 text-sm text-gray-600">
                       {product.stockQuantity ?? 'N/A'}
                     </td>

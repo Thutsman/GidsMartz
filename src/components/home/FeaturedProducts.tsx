@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn, formatPrice } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Product } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -76,10 +76,10 @@ export function FeaturedProducts() {
           )}
         >
           <div>
-            <span className="text-[#DC2626] font-semibold text-xs sm:text-sm uppercase tracking-wider">
+            <span className="text-gids-red font-semibold text-xs sm:text-sm uppercase tracking-wider">
               Top Picks
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E3A8A] mt-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gids-blue mt-2">
               Featured Products
             </h2>
           </div>
@@ -109,7 +109,7 @@ export function FeaturedProducts() {
         {loading ? (
           <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mx-4 sm:-mx-6 px-4 sm:px-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-[260px] sm:w-[280px] bg-gray-100 rounded-lg animate-pulse">
+              <div key={i} className="shrink-0 w-[260px] sm:w-[280px] bg-gray-100 rounded-lg animate-pulse">
                 <div className="aspect-square bg-gray-200 rounded-t-lg"></div>
                 <div className="p-4 space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -132,7 +132,7 @@ export function FeaturedProducts() {
             <Link
               key={product.id}
               href={`/products/${product.categorySlug}/${product.id}`}
-              className="flex-shrink-0 w-[260px] sm:w-[280px] snap-start group"
+              className="shrink-0 w-[260px] sm:w-[280px] snap-start group"
             >
               <div className={cn(
                 'bg-white rounded-lg sm:rounded-xl overflow-hidden',
@@ -152,7 +152,7 @@ export function FeaturedProducts() {
 
                   {/* Brand Badge */}
                   <Badge
-                    className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-[#1E3A8A] hover:bg-[#1E3A8A] text-xs"
+                    className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-gids-blue hover:bg-gids-blue text-xs"
                   >
                     {product.brand}
                   </Badge>
@@ -172,7 +172,7 @@ export function FeaturedProducts() {
 
                 {/* Content */}
                 <div className="p-3 sm:p-4">
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#1E3A8A] transition-colors line-clamp-2 min-h-[40px] sm:min-h-[48px]">
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-gids-blue transition-colors line-clamp-2 min-h-[40px] sm:min-h-[48px]">
                     {product.name}
                   </h3>
 
@@ -181,14 +181,10 @@ export function FeaturedProducts() {
                   </p>
 
                   <div className="flex items-center justify-between mt-3 sm:mt-4">
-                    <span className="text-lg sm:text-xl font-bold text-[#1E3A8A]">
-                      {formatPrice(product.price, product.currency)}
-                    </span>
-
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-[#DC2626] hover:text-[#B91C1C] hover:bg-red-50 p-0 text-xs sm:text-sm"
+                      className="text-gids-red hover:text-gids-red-dark hover:bg-red-50 p-0 text-xs sm:text-sm"
                     >
                       View
                       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
@@ -206,7 +202,7 @@ export function FeaturedProducts() {
           <Link href="/products">
             <Button
               size="lg"
-              className="bg-[#1E3A8A] hover:bg-[#172554] text-white text-sm sm:text-base px-6 sm:px-8"
+              className="bg-gids-blue hover:bg-gids-blue-dark text-white text-sm sm:text-base px-6 sm:px-8"
             >
               View All Products
               <ArrowRight className="h-4 w-4 ml-2" />

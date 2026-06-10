@@ -3,6 +3,7 @@ import {
   TrustBadges,
   FeaturedCategories,
   FeaturedProducts,
+  ProductGallery,
   DiasporaSection,
   WhyChooseUs,
   BrandsWeCarry,
@@ -24,6 +25,9 @@ export default function HomePage() {
 
       {/* Featured Products */}
       <FeaturedProducts />
+
+      {/* Product Gallery */}
+      <ProductGallery />
 
       {/* Why Choose Us */}
       <WhyChooseUs />

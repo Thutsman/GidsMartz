@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -28,7 +28,6 @@ export function ProductGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const thumbnailsRef = useRef<HTMLDivElement>(null);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ triggerOnce: true });
 
   useEffect(() => {
@@ -62,9 +61,6 @@ export function ProductGallery() {
 
   const goTo = useCallback((index: number) => {
     setActiveIndex(index);
-    // Scroll thumbnail into view
-    const el = thumbnailsRef.current?.children[index] as HTMLElement | undefined;
-    el?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, []);
 
   const prev = useCallback(() => {
@@ -79,13 +75,11 @@ export function ProductGallery() {
     setTimeout(() => setIsAutoPlaying(true), 8000);
   }, [activeIndex, visibleProducts.length, goTo]);
 
-  // Reset index when tab changes
   useEffect(() => {
     setActiveIndex(0);
     setIsAutoPlaying(true);
   }, [activeTab]);
 
-  // Auto-play
   useEffect(() => {
     if (!isAutoPlaying || visibleProducts.length < 2) return;
     const id = setInterval(() => {
@@ -94,7 +88,6 @@ export function ProductGallery() {
     return () => clearInterval(id);
   }, [isAutoPlaying, visibleProducts.length]);
 
-  // Keyboard navigation for lightbox
   useEffect(() => {
     if (!lightboxOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -162,9 +155,9 @@ export function ProductGallery() {
             </div>
 
             {visibleProducts.length > 0 && (
-              <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
-                {/* Main Image */}
-                <div className="flex-1 relative">
+              <div>
+                {/* Main Image — full width, no thumbnail strip */}
+                <div className="relative">
                   <div
                     className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 cursor-zoom-in group shadow-md"
                     onClick={() => setLightboxOpen(true)}
@@ -174,7 +167,7 @@ export function ProductGallery() {
                       alt={currentProduct.name}
                       fill
                       className="object-contain transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 1024px) 100vw, 65vw"
+                      sizes="100vw"
                       priority
                     />
                     {/* Zoom hint */}
@@ -216,43 +209,12 @@ export function ProductGallery() {
                     <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{currentProduct.category}</p>
                   </div>
                 </div>
-
-                {/* Thumbnail Strip */}
-                <div className="lg:w-40 xl:w-48">
-                  <div
-                    ref={thumbnailsRef}
-                    className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-[360px] pb-1 lg:pb-0 lg:pr-1 scrollbar-hide"
-                    style={{ scrollbarWidth: 'none' }}
-                  >
-                    {visibleProducts.map((p, i) => (
-                      <button
-                        key={p.id}
-                        onClick={() => { goTo(i); setIsAutoPlaying(false); setTimeout(() => setIsAutoPlaying(true), 8000); }}
-                        className={cn(
-                          'shrink-0 relative w-20 h-20 lg:w-full lg:h-28 rounded-lg overflow-hidden bg-gray-100 border-2 transition-all duration-200',
-                          i === activeIndex
-                            ? 'border-[#1E3A8A] shadow-md scale-[1.03]'
-                            : 'border-transparent hover:border-gray-300'
-                        )}
-                        aria-label={`View ${p.name}`}
-                      >
-                        <Image
-                          src={p.image}
-                          alt={p.name}
-                          fill
-                          className="object-contain"
-                          sizes="(max-width: 1024px) 80px, 192px"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
             )}
 
-            {/* Dot indicators (mobile) */}
+            {/* Dot indicators */}
             {visibleProducts.length > 1 && (
-              <div className="flex justify-center gap-1.5 mt-4 lg:hidden">
+              <div className="flex justify-center gap-1.5 mt-4">
                 {visibleProducts.slice(0, 12).map((_, i) => (
                   <button
                     key={i}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
@@ -10,11 +10,37 @@ import { cn } from '@/lib/utils';
 import { Product } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
+const showcaseSlides = [
+  { src: '/products/lovato-power-factor-controller.jpg', name: 'Lovato DCRG8 Power Factor Controller', brand: 'Lovato' },
+  { src: '/products/lovato-contactor.jpg', name: 'Lovato Heavy-Duty 3-Pole Contactor', brand: 'Lovato' },
+  { src: '/products/hager-mccb-250a.jpg', name: 'Hager h3 x250 — 250A MCCB', brand: 'Hager' },
+  { src: '/products/fluke-insulation-tester.jpg', name: 'Fluke High-Voltage Insulation Resistance Tester', brand: 'Fluke' },
+  { src: '/products/sirenco-industrial-siren.jpg', name: 'Sirenco 2D Industrial Siren', brand: 'Sirenco' },
+  { src: '/products/pole-mounted-transformer.jpg', name: 'Pole-Mounted Distribution Transformer', brand: 'Distribution' },
+];
+
 export function FeaturedProducts() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [slide, setSlide] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ triggerOnce: true });
+
+  const nextSlide = useCallback(() => setSlide((s) => (s + 1) % showcaseSlides.length), []);
+  const prevSlide = useCallback(() => setSlide((s) => (s - 1 + showcaseSlides.length) % showcaseSlides.length), []);
+
+  const manualNav = (fn: () => void) => {
+    fn();
+    setAutoPlay(false);
+    setTimeout(() => setAutoPlay(true), 8000);
+  };
+
+  useEffect(() => {
+    if (!autoPlay) return;
+    const id = setInterval(nextSlide, 3500);
+    return () => clearInterval(id);
+  }, [autoPlay, nextSlide]);
 
   useEffect(() => {
     async function fetchFeaturedProducts() {
@@ -102,6 +128,71 @@ export function FeaturedProducts() {
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
+          </div>
+        </div>
+
+        {/* Product Image Showcase Slideshow */}
+        <div className="relative rounded-xl overflow-hidden bg-gray-50 mb-8 sm:mb-10 shadow-sm border border-gray-100">
+          <div className="relative aspect-[16/7] sm:aspect-[16/6] md:aspect-[16/5]">
+            {showcaseSlides.map((s, i) => (
+              <div
+                key={s.src}
+                className={cn(
+                  'absolute inset-0 transition-opacity duration-700',
+                  i === slide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                )}
+              >
+                <Image
+                  src={s.src}
+                  alt={s.name}
+                  fill
+                  className="object-contain p-4 sm:p-6"
+                  sizes="100vw"
+                  priority={i === 0}
+                />
+                {/* Gradient overlay at bottom for label */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-4 sm:px-6 py-3 sm:py-4 z-20">
+                  <p className="text-white font-semibold text-sm sm:text-base md:text-lg leading-tight">{s.name}</p>
+                  <p className="text-gray-300 text-xs sm:text-sm mt-0.5">{s.brand}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Arrows */}
+            <button
+              onClick={() => manualNav(prevSlide)}
+              className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition-colors"
+              aria-label="Previous product"
+            >
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-gray-700" />
+            </button>
+            <button
+              onClick={() => manualNav(nextSlide)}
+              className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition-colors"
+              aria-label="Next product"
+            >
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-700" />
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-3 right-3 z-30 bg-black/40 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+              {slide + 1} / {showcaseSlides.length}
+            </div>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-1.5 py-3 bg-white">
+            {showcaseSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setSlide(i); setAutoPlay(false); setTimeout(() => setAutoPlay(true), 8000); }}
+                className={cn(
+                  'rounded-full transition-all duration-300',
+                  i === slide ? 'bg-[#1E3A8A] w-5 h-2' : 'bg-gray-300 w-2 h-2 hover:bg-gray-400'
+                )}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
 

@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, MapPin, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const slides = [
   {
@@ -31,7 +30,6 @@ const highlights = [
 export function FeaturedProject() {
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const { ref: sectionRef, isVisible } = useScrollAnimation({ triggerOnce: true });
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
   const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
@@ -52,10 +50,7 @@ export function FeaturedProject() {
     <section className="py-12 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div
-          ref={sectionRef}
-          className={cn('text-center mb-8 sm:mb-10 scroll-fade-in', isVisible && 'visible')}
-        >
+        <div className="text-center mb-8 sm:mb-10">
           <span className="text-[#DC2626] font-semibold text-xs sm:text-sm uppercase tracking-wider">
             Our Work
           </span>
@@ -68,12 +63,7 @@ export function FeaturedProject() {
         </div>
 
         {/* Project Card */}
-        <div className={cn(
-          'max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-gray-100',
-          'flex flex-col lg:flex-row',
-          'scroll-fade-in',
-          isVisible && 'visible'
-        )}>
+        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col lg:flex-row">
           {/* Slideshow */}
           <div className="relative lg:w-3/5 aspect-[4/3] lg:aspect-auto lg:min-h-[420px] bg-gray-900 shrink-0">
             {slides.map((slide, i) => (

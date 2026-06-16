@@ -24,8 +24,8 @@ export default function HomePage() {
       {/* Featured Categories */}
       <FeaturedCategories />
 
-      {/* Featured Products */}
-      <FeaturedProducts />
+      {/* Featured Project */}
+      <FeaturedProject />
 
       {/* Product Gallery */}
       <ProductGallery />
@@ -33,8 +33,8 @@ export default function HomePage() {
       {/* Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Featured Project */}
-      <FeaturedProject />
+      {/* Featured Products */}
+      <FeaturedProducts />
 
       {/* Diaspora Section */}
       <DiasporaSection />

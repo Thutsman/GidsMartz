@@ -4,6 +4,7 @@ import {
   FeaturedCategories,
   FeaturedProducts,
   ProductGallery,
+  FeaturedProject,
   DiasporaSection,
   WhyChooseUs,
   BrandsWeCarry,
@@ -31,6 +32,9 @@ export default function HomePage() {
 
       {/* Why Choose Us */}
       <WhyChooseUs />
+
+      {/* Featured Project */}
+      <FeaturedProject />
 
       {/* Diaspora Section */}
       <DiasporaSection />

@@ -4,6 +4,7 @@ export { FeaturedCategories } from './FeaturedCategories';
 export { FeaturedProducts } from './FeaturedProducts';
 export { ProductGallery } from './ProductGallery';
 export { DiasporaSection } from './DiasporaSection';
+export { FeaturedProject } from './FeaturedProject';
 export { WhyChooseUs } from './WhyChooseUs';
 export { BrandsWeCarry } from './BrandsWeCarry';
 export { Testimonials } from './Testimonials';

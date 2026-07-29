@@ -10,6 +10,10 @@ import { cn } from '@/lib/utils';
 import { Product } from '@/types';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
+function hasRealImage(p: Product): boolean {
+  return Boolean(p.image) && !p.image.includes('placehold.co') && !p.image.includes('unsplash.com');
+}
+
 const showcaseSlides = [
   { src: '/products/lovato-power-factor-controller.jpg', name: 'Lovato DCRG8 Power Factor Controller', brand: 'Lovato' },
   { src: '/products/lovato-contactor.jpg', name: 'Lovato Heavy-Duty 3-Pole Contactor', brand: 'Lovato' },
@@ -50,15 +54,15 @@ export function FeaturedProducts() {
 
         // Ensure data is an array
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data.filter((p: Product) => p.image && !p.image.includes('placehold.co')));
+          setProducts(data.filter(hasRealImage));
         } else if (Array.isArray(data)) {
           const { getFeaturedProducts } = await import('@/data/products');
-          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
+          setProducts(getFeaturedProducts().filter(hasRealImage));
         } else if (data.error) {
           // If API returns an error, fallback to static data
           console.warn('API error, using fallback data:', data.error);
           const { getFeaturedProducts } = await import('@/data/products');
-          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
+          setProducts(getFeaturedProducts().filter(hasRealImage));
         } else {
           // Unknown response format, use empty array
           console.warn('Unexpected API response format:', data);
@@ -69,7 +73,7 @@ export function FeaturedProducts() {
         // Fallback to static data on network error
         try {
           const { getFeaturedProducts } = await import('@/data/products');
-          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
+          setProducts(getFeaturedProducts().filter(hasRealImage));
         } catch (importError) {
           // If import fails, use empty array
           setProducts([]);

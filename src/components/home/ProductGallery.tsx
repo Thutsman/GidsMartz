@@ -11,6 +11,10 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const ALL_LABEL = 'All';
 
+function hasRealImage(p: Product): boolean {
+  return Boolean(p.image) && !p.image.includes('placehold.co') && !p.image.includes('unsplash.com');
+}
+
 function groupByCategory(products: Product[]): Record<string, Product[]> {
   const groups: Record<string, Product[]> = { [ALL_LABEL]: products };
   for (const p of products) {
@@ -36,15 +40,15 @@ export function ProductGallery() {
         const res = await fetch('/api/products?limit=100');
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data.filter((p: Product) => p.image && !p.image.includes('placehold.co')));
+          setProducts(data.filter(hasRealImage));
         } else {
           const { products: fallback } = await import('@/data/products');
-          setProducts((fallback ?? []).filter((p) => p.image && !p.image.includes('placehold.co')));
+          setProducts((fallback ?? []).filter(hasRealImage));
         }
       } catch {
         try {
           const { products: fallback } = await import('@/data/products');
-          setProducts((fallback ?? []).filter((p) => p.image && !p.image.includes('placehold.co')));
+          setProducts((fallback ?? []).filter(hasRealImage));
         } catch {
           setProducts([]);
         }

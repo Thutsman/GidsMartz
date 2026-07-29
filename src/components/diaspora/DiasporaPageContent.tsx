@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Check,
   Globe,
@@ -379,14 +378,24 @@ ${formData.message}
               )}
             >
               <div className="relative">
-                <Image
-                  src="https://placehold.co/600x700/1E3A8A/FFFFFF?text=Quality+Installation"
-                  alt="Professional electrical installation"
-                  width={600}
-                  height={700}
-                  className="rounded-2xl shadow-2xl"
-                />
-                
+                <div className="w-full aspect-[6/7] rounded-2xl shadow-2xl bg-gradient-to-br from-[#172554] via-gids-blue to-[#DC2626] relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-20">
+                    <div className="absolute top-8 left-8 w-28 h-28 border-4 border-white rounded-full" />
+                    <div className="absolute bottom-16 right-8 w-20 h-20 border-4 border-white rounded-full" />
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
+                    <div className="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 border border-white/20">
+                      <Wrench className="h-10 w-10 text-white" />
+                    </div>
+                    <p className="text-white text-2xl font-bold leading-snug">
+                      Professional Installation
+                    </p>
+                    <p className="text-gray-300 text-sm mt-2 max-w-xs">
+                      Quality electrical work delivered by our trusted technical team
+                    </p>
+                  </div>
+                </div>
+
                 {/* Stats Overlay */}
                 <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-xl">
                   <div className="grid grid-cols-3 gap-4 text-center">

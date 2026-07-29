@@ -36,15 +36,15 @@ export function ProductGallery() {
         const res = await fetch('/api/products?limit=100');
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
+          setProducts(data.filter((p: Product) => p.image && !p.image.includes('placehold.co')));
         } else {
           const { products: fallback } = await import('@/data/products');
-          setProducts(fallback ?? []);
+          setProducts((fallback ?? []).filter((p) => p.image && !p.image.includes('placehold.co')));
         }
       } catch {
         try {
           const { products: fallback } = await import('@/data/products');
-          setProducts(fallback ?? []);
+          setProducts((fallback ?? []).filter((p) => p.image && !p.image.includes('placehold.co')));
         } catch {
           setProducts([]);
         }

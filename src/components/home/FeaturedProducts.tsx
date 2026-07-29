@@ -47,15 +47,18 @@ export function FeaturedProducts() {
       try {
         const response = await fetch('/api/products?featured=true&inStock=true&limit=20');
         const data = await response.json();
-        
+
         // Ensure data is an array
-        if (Array.isArray(data)) {
-          setProducts(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data.filter((p: Product) => p.image && !p.image.includes('placehold.co')));
+        } else if (Array.isArray(data)) {
+          const { getFeaturedProducts } = await import('@/data/products');
+          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
         } else if (data.error) {
           // If API returns an error, fallback to static data
           console.warn('API error, using fallback data:', data.error);
           const { getFeaturedProducts } = await import('@/data/products');
-          setProducts(getFeaturedProducts());
+          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
         } else {
           // Unknown response format, use empty array
           console.warn('Unexpected API response format:', data);
@@ -66,7 +69,7 @@ export function FeaturedProducts() {
         // Fallback to static data on network error
         try {
           const { getFeaturedProducts } = await import('@/data/products');
-          setProducts(getFeaturedProducts());
+          setProducts(getFeaturedProducts().filter((p) => p.image && !p.image.includes('placehold.co')));
         } catch (importError) {
           // If import fails, use empty array
           setProducts([]);

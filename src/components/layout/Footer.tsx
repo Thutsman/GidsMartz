@@ -157,7 +157,7 @@ export function Footer() {
               <ul className="space-y-2 text-sm text-gray-300">
                 <li className="flex items-start gap-2">
                   <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                  <span>56 Palmer Road, Milton Park</span>
+                  <span>78 Suffolk Road</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Phone className="h-4 w-4 flex-shrink-0" />

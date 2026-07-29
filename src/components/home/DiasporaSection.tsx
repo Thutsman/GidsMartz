@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Check,
   Globe,
@@ -9,7 +8,8 @@ import {
   Truck,
   MessageCircle,
   CreditCard,
-  ArrowRight
+  ArrowRight,
+  Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generateWhatsAppLink } from '@/lib/utils';
@@ -134,14 +134,31 @@ export function DiasporaSection() {
               imageVisible && 'visible'
             )}
           >
-            <div className="relative aspect-square md:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="https://placehold.co/800x600/1E3A8A/FFFFFF?text=Modern+House+Zimbabwe"
-                alt="Modern house in Zimbabwe"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+            <div className="relative aspect-square md:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#172554] via-[#1E3A8A] to-[#DC2626]">
+              {/* Decorative pattern */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-6 left-6 w-32 h-32 border-4 border-white rounded-full" />
+                <div className="absolute bottom-10 right-10 w-24 h-24 border-4 border-white rounded-full" />
+              </div>
+
+              {/* Flag stripe accent */}
+              <div className="absolute top-0 left-0 right-0 flex flex-col">
+                <div className="h-1.5 sm:h-2 bg-[#DC2626]" />
+                <div className="h-1.5 sm:h-2 bg-white" />
+              </div>
+
+              {/* Centerpiece */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border border-white/20">
+                  <Home className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                </div>
+                <p className="text-white text-lg sm:text-2xl font-bold leading-snug">
+                  Your Home, Our Materials
+                </p>
+                <p className="text-gray-300 text-xs sm:text-sm mt-2 max-w-xs">
+                  Genuine electrical supplies delivered wherever you&apos;re building in Zimbabwe
+                </p>
+              </div>
 
               {/* Floating Card */}
               <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 bg-white/95 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-xl">

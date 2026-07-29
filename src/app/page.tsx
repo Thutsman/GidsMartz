@@ -27,14 +27,14 @@ export default function HomePage() {
       {/* Featured Project */}
       <FeaturedProject />
 
-      {/* Product Gallery */}
-      <ProductGallery />
+      {/* Featured Products */}
+      <FeaturedProducts />
 
       {/* Why Choose Us */}
       <WhyChooseUs />
 
-      {/* Featured Products */}
-      <FeaturedProducts />
+      {/* Product Gallery */}
+      <ProductGallery />
 
       {/* Diaspora Section */}
       <DiasporaSection />

@@ -18,7 +18,7 @@ export const companyInfo: CompanyInfo = {
     },
     {
       location: 'Harare',
-      address: 'No. 56 Palmer Road, Milton Park, Harare, Zimbabwe',
+      address: 'No. 78 Suffolk Road, Harare, Zimbabwe',
       phone: ['+263 242 257169', '+263 8644286997'],
       cell: ['+263 789 666 979', '+263 781 609 579'],
       email: 'sales@gidsmartz.com'
@@ -37,8 +37,7 @@ export const testimonials: Testimonial[] = [
     company: 'Blanket Mine',
     industry: 'Mining',
     quote: 'GIDS-MARTZ has been our trusted supplier for over 10 years. Their technical expertise and genuine products have kept our operations running smoothly.',
-    rating: 5,
-    image: 'https://placehold.co/100x100/1E3A8A/FFFFFF?text=JM'
+    rating: 5
   },
   {
     id: 'test-002',
@@ -46,8 +45,7 @@ export const testimonials: Testimonial[] = [
     company: 'Delta Beverages',
     industry: 'Manufacturing',
     quote: 'Excellent service and competitive pricing. The team always goes the extra mile to source hard-to-find components for our production lines.',
-    rating: 5,
-    image: 'https://placehold.co/100x100/DC2626/FFFFFF?text=SN'
+    rating: 5
   },
   {
     id: 'test-003',
@@ -55,8 +53,7 @@ export const testimonials: Testimonial[] = [
     company: 'National Railways of Zimbabwe',
     industry: 'Transport',
     quote: 'Reliable delivery and quality products. GIDS-MARTZ understands industrial requirements and provides solutions that work.',
-    rating: 5,
-    image: 'https://placehold.co/100x100/1E40AF/FFFFFF?text=PM'
+    rating: 5
   }
 ];
 
